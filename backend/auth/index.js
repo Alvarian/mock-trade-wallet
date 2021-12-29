@@ -1,22 +1,20 @@
 // jwt auth https://www.youtube.com/watch?v=mbsmsi7l3r4
 
 /*
-    import bcryptjs
     import dotenv
     import middlewares
     import cookie parser? as payload
-    import lib
     import userRoutes
-    use body parser
     use payload
     use json from express
     use databases
 */ 
+require('dotenv').config();
 const express = require('express');
 const app = express();
-const userRoutes = require('./routes/user-routes')
+const userRoutes = require('./routes/user-routes');
 
-require('dotenv/config');
+require('./database/config').db();
 app.use(express.json());
 
 

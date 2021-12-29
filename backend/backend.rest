@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
     "username": "guuh",
-    "password": "ravenc"
+    "password": "ravenclaw123"
 }
 
 ###
@@ -12,7 +12,8 @@ Content-Type: application/json
 
 {
     "username": "guuh",
-    "password": "ravenclaw123"
+    "password": "ravenclaw123",
+    "role": "trader"
 }
 
 ###
