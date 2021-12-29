@@ -1,0 +1,37 @@
+tabnine, yarn, mongodb, nodejs, redis, mysql, REST client
+
+nodejs
+======
+sudo pacman -S nodejs
+
+yarn
+====
+sudo pacman -S yarn
+yarn init -y
+if dependencies exist, then use: yarn install
+to remove the dependencies, then use: yarn remove pkg
+yarn/dependencies - yarn add pkg
+yarn/dev - yarn add pkg --dev/-D
+
+mysql
+=====
+sudo pacman -S mariadb
+mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
+
+redis
+=====
+sudo pacman -S redis
+systemctl enable redis
+systemctl start redis
+redis-cli
+
+mongodb
+=======
+git clone https://aur.archlinux.org/mongodb-bin.git
+makepkg -si
+Download from https://docs.mongodb.com/mongodb-shell/install/
+
+
+REST client
+===========
+vscode extention

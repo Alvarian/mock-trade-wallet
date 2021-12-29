@@ -1,0 +1,5 @@
+yarn init -y
+yarn create next-app
+
+yarn add daisyui tailwind
+// https://daisyui.com/docs/install

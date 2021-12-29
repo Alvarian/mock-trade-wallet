@@ -1,0 +1,10 @@
+https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch/relational-databases/connect-your-database-node-mysql
+
+yarn init -y
+yarn add prisma -D
+npx prisma
+npx prisma init
+
+yarn add express dotenv redis jsonwebtoken axios
+
+expose

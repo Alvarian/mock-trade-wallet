@@ -1,0 +1,5 @@
+yarn init -y
+
+yarn add express bcrypt dotenv redis jsonwebtoken mongoose
+
+expose

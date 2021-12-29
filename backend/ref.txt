@@ -1,0 +1,42 @@
+backend - cloudflare?
+=======
+
+auth/stacks
+=======
+express
+yarn lock
+mongoose (mongosh: ivan, 123456)
+jsonwebtokens
+redis
+dotenv
+
+auth/routes
+=======
+login - create and send jwt
+register - create user if not exist and trigger /login 
+
+
+stocks/stacks
+=============
+express
+yarn lock
+jsonwebtokens
+dotenv
+axios
+redis 
+prisma (mysql: ivan, 123456)
+
+stocks/3rdparty
+===============
+IEX API
+
+stocks/routes
+=============
+assets - have middleware send negative status if jwt is not in req
+	- if not, res send all of user's assets from redis -> if empty get all data from db and axios fetch all prices from api
+search - axios fetch all results starting from a minimal 2 length string 
+buy - have middleware send negative status if jwt is not in req
+	- if not, expect payload and send negative status if user bank is less then transaction+fee(goes to admin)
+	- if not rejected,  
+transaction history - have middleware send negative status if jwt is not in req
+	- if not, get all data from db

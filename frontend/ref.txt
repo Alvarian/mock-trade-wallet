@@ -1,0 +1,23 @@
+continuous deployment via github
+
+stacks
+======
+nextjs
+fetch
+daisyUI
+
+pages
+=====
+landing
+login
+register
+portfolio
+transactions
+host
+
+components
+==========
+input
+button
+form
+navbar
