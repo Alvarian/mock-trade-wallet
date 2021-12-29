@@ -1,7 +1,19 @@
 POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "username": "guuh",
+    "password": "ravenc"
+}
 
 ###
 POST http://localhost:3000/register
+Content-Type: application/json
+
+{
+    "username": "guuh",
+    "password": "ravenclaw123"
+}
 
 ###
 DELETE http://localhost:3000/logout
