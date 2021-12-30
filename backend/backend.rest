@@ -1,1 +1,33 @@
-GET http://localhost:3000/fairgrounds
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "username": "ivan",
+    "password": "ravenclaw123"
+}
+
+###
+POST http://localhost:3000/refresh_token
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWNkNWRkYzJkNTAwY2FjMTgxYWQ5MTUiLCJlbWFpbCI6Iml2YW4iLCJwYXNzd29yZCI6IiQyYSQxMCRDM0VEN0djaWhKeUZmbDdzZEFyZDdldmM3ZGZDaE16SUxpdkp1aXZzTjdtRHdTcmNNZ2tYNiIsImlzSG9zdCI6dHJ1ZSwiX192IjowLCJpYXQiOjE2NDA4OTAyMzd9.YZipWCQdCQUqU2yafGHLmIymzcO_k-CLRaC-HMsGlEU"
+}
+
+###
+POST http://localhost:3000/register
+Content-Type: application/json
+
+{
+    "username": "ivan",
+    "password": "ravenclaw123",
+    "isHost": true
+}
+
+###
+DELETE http://localhost:3000/logout
+Content-Type: application/json
+
+{
+    "username": "ivan"
+}
