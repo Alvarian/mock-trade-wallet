@@ -14,17 +14,19 @@ const mongoose = require('mongoose');
 
 
 module.exports = {
-    db: () => {
+    mongo: (() => {
         mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true });
         const db = mongoose.connection;
         db.on('error', (error) => console.error(error));
         db.once('open', () => console.log('Connected to Database'));
-    },
-    cache: () => {
+    })(),
+    redis: (async () => {
         const REDIS_PORT = process.env.REDIS_PORT || 6379;
         const client = redis.createClient(REDIS_PORT);
+
+        await client.connect();
         console.log("Connected to Cache");
 
         return client;
-    }
+    })()
 }

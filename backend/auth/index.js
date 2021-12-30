@@ -10,21 +10,30 @@
     use databases
 */ 
 require('dotenv').config();
+const jwt = require('jsonwebtoken');
 const express = require('express');
 const app = express();
 const userRoutes = require('./routes/user-routes');
+const isRefreshToken = require('./middleware/isRefreshToken');
+const { generateAccessToken } = require('./lib/generateTokens');
 
-require('./database/config').db();
+require('./database/config');
 app.use(express.json());
 
 
 // @refresh post, isRefreshToken, send (new access token)()
+app.post('/refresh_token', isRefreshToken, (req, res) => {
+    const payload = req.user;
+    
+    const accessToken = generateAccessToken(payload);
+    
+    res.json({ accessToken });
+});
 
-// @login, use userRoute
 app.use('/', userRoutes);
 
 // @* get catch with 404
-app.use('*', (req, res) => res.sendStatus(404));
+app.use('*', (_req, res) => res.sendStatus(404));
 
 
 // listen here

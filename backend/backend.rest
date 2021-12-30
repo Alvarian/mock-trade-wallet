@@ -2,8 +2,16 @@ POST http://localhost:3000/login
 Content-Type: application/json
 
 {
-    "username": "guuh",
+    "username": "ivan",
     "password": "ravenclaw123"
+}
+
+###
+POST http://localhost:3000/refresh_token
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWNiZmUyNmRkNDRhOGY2NDQxMjM0ZjUiLCJlbWFpbCI6Imd1dWgiLCJwYXNzd29yZCI6IiQyYSQxMCRFSkZyaDFMQW8wVm04Z3ptM21SeXllbVhKV2dGWlJPejNLbEczSE9kMDlTTEVFeXFBTXo3UyIsInJvbGUiOiJ0cmFkZXIiLCJfX3YiOjAsImlhdCI6MTY0MDg0NTYzNn0.AJRFa64VwvLnqgmdYsgq9wpjMjVjODFQ6nY_pZGk9pE"
 }
 
 ###
@@ -11,10 +19,15 @@ POST http://localhost:3000/register
 Content-Type: application/json
 
 {
-    "username": "guuh",
+    "username": "ivan",
     "password": "ravenclaw123",
-    "role": "trader"
+    "isHost": true
 }
 
 ###
 DELETE http://localhost:3000/logout
+Content-Type: application/json
+
+{
+    "username": "ivan"
+}
