@@ -13,11 +13,11 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const express = require('express');
 const app = express();
-const userRoutes = require('./routes/user-routes');
-const isRefreshToken = require('./middleware/isRefreshToken');
-const { generateAccessToken } = require('./lib/generateTokens');
+const userRoutes = require('./src/routes/user-routes');
+const isRefreshToken = require('./src/lib/middleware/isRefreshToken');
+const { generateAccessToken } = require('./src/lib/generateTokens');
 
-require('./database/config');
+require('./src/database/config');
 app.use(express.json());
 
 
