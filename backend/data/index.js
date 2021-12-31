@@ -22,9 +22,9 @@ app.get('/assets', (req, res) => {
 });
 
 // @search, isAuth, get all from IEX_api per character entry, using minimal 2 characters in req
-app.get('/api', hasAuth, (req, res) => {
-    res.send(req.user);
-});
+const servicesRoutes = require('./src/routes/services-routes');
+app.use('/services', hasAuth, servicesRoutes);
+
 
 // @history, isAuth, cache, use historyRoute
 app.get('/transactions', (req, res) => {
@@ -33,7 +33,7 @@ app.get('/transactions', (req, res) => {
 
 
 // @* catch with 404
-app.use('*', (req, res) => res.sendStatus(404));
+app.use('*', (_req, res) => res.sendStatus(404));
 
 // listen here
 const PORT = process.env.PORT || 3001;
