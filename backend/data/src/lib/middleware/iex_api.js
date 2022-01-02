@@ -1,4 +1,4 @@
-// IEX API https://iexcloud.io/docs/api/
+// IEX API https://iexcloud.io/docs/api/ && https://api.tiingo.com/documentation/iex
 
 /*
    import axios

@@ -7,4 +7,8 @@ npx prisma init
 
 yarn add express dotenv redis jsonwebtoken axios
 
-expose
+create models and
+npx prisma generate --schema=./src/prisma/schema.prisma ??
+npx prisma migrate dev --schema=./src/prisma/schema.prisma
+
+yarn add @prisma/client

@@ -10,42 +10,56 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// model Assets {
+model User {
 
-//   id        Int      @id @default(autoincrement())
+  id           Int     @id @default(autoincrement())
 
-//   createdAt DateTime @default(now())
+  name         String
+  
+  user_id      String  @unique
+  
+  isHost       Boolean @default(false)
 
-//   updatedAt DateTime @updatedAt
+  transactions Transaction[] 
 
-//   title     String   @db.VarChar(255)
+  assets       Asset[]
 
-//   content   String?
+}
 
-//   published Boolean  @default(false)
+model Asset {
 
-//   author    User     @relation(fields: [authorId], references: [id])
+  id        Int      @id @default(autoincrement())
 
-//   authorId  Int
+  createdAt DateTime @default(now())
 
-// }
+  updatedAt DateTime @updatedAt
 
-// model Transactions {
+  symbol    String   @db.VarChar(10)
 
-//   id        Int      @id @default(autoincrement())
+  total     Int      @default(0)
 
-//   createdAt DateTime @default(now())
+  account   User     @relation(fields: [assetId], references: [id])
 
-//   updatedAt DateTime @updatedAt
+  assetId   Int
 
-//   title     String   @db.VarChar(255)
+}
 
-//   content   String?
+model Transaction {
 
-//   published Boolean  @default(false)
+  id             Int      @id @default(autoincrement())
 
-//   author    User     @relation(fields: [authorId], references: [id])
+  createdAt      DateTime @default(now())
 
-//   authorId  Int
+  updatedAt      DateTime @updatedAt
 
-// }
+  symbol         String   @db.VarChar(10)
+
+  quantidy       Int
+
+  purchase_price Int
+
+  account        User     @relation(fields: [transactionId], references: [id])
+
+  transactionId  Int
+
+}
