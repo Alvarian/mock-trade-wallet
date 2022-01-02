@@ -13,6 +13,7 @@ const User = require('../models/User');
 const { generateAccessToken, generateRefreshToken } = require('../lib/generateTokens')
 const { redis } = require('../database/config');
 const logger = require('../lib/logger');
+const { createHash } = require('crypto');
 
 
 // post / if login works using body details with password and user from db, cache (new refresh token)() and send (new access token)(). If not send status unauthorized
@@ -37,14 +38,17 @@ router.post('/login', async (req, res) => {
             return res.sendStatus(401);
         }
         
-        const payload = user.toJSON();
+        const refreshToken = generateRefreshToken(user.toJSON());
         const cacheDB = await redis;
-        cacheDB.setEx(user.email, 3600, generateRefreshToken(payload));
-        
-        res.json({
-            accessToken: generateAccessToken(payload),
-            refreshToken: generateRefreshToken(payload)
+        cacheDB.setEx(user.email, 3600, refreshToken);
+
+        res.cookie('accessToken', generateAccessToken({user_id: user.userID}), {
+            httpOnly: true, 
+            // secure: true // turn on in prod
         });
+
+        res.json(res.cookies); // turn off when client is connected
+        // res.sendStatus(200);
     });
 });
 
@@ -71,13 +75,18 @@ router.post('/register', async (req, res) => {
             }
 
             // Store hash in your password DB.
-            const user = new User({ email: username, password: hash, isHost });
+            const userID = createHash('sha256').update(username).digest('hex');
+
+            const user = new User({ email: username, password: hash, isHost, userID });
 
             try {
+                // first post for a new user in data server
+                
                 await user.save();
 
                 res.sendStatus(200);
             } catch (err) {
+                logger.info("Error at register", err);
                 res.sendStatus(400);
             }
         });

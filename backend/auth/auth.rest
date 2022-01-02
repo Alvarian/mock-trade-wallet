@@ -2,24 +2,20 @@ POST http://localhost:3000/login
 Content-Type: application/json
 
 {
-    "username": "ivan",
+    "username": "ivan@hogwarts.uk",
     "password": "ravenclaw123"
 }
 
 ###
 POST http://localhost:3000/refresh_token
-Content-Type: application/json
-
-{
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWNkNWRkYzJkNTAwY2FjMTgxYWQ5MTUiLCJlbWFpbCI6Iml2YW4iLCJwYXNzd29yZCI6IiQyYSQxMCRDM0VEN0djaWhKeUZmbDdzZEFyZDdldmM3ZGZDaE16SUxpdkp1aXZzTjdtRHdTcmNNZ2tYNiIsImlzSG9zdCI6dHJ1ZSwiX192IjowLCJpYXQiOjE2NDA5MjAwMTB9.7RspWf2_QH35DKlzJM6hQDzMoWY79O-PZe62oJAoA5g"
-}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWNkNWRkYzJkNTAwY2FjMTgxYWQ5MTUiLCJlbWFpbCI6Iml2YW4iLCJwYXNzd29yZCI6IiQyYSQxMCRDM0VEN0djaWhKeUZmbDdzZEFyZDdldmM3ZGZDaE16SUxpdkp1aXZzTjdtRHdTcmNNZ2tYNiIsImlzSG9zdCI6dHJ1ZSwiX192IjowLCJpYXQiOjE2NDA5MTk5NDEsImV4cCI6MTY0MDkxOTk1Nn0.wNUhC03v-1rSJnvmQ-IY6ouO_HJDo3MkiGb7W08nglo
 
 ###
 POST http://localhost:3000/register
 Content-Type: application/json
 
 {
-    "username": "ivan",
+    "username": "ivan@hogwarts.uk",
     "password": "ravenclaw123",
     "isHost": true
 }
@@ -29,5 +25,5 @@ DELETE http://localhost:3000/logout
 Content-Type: application/json
 
 {
-    "username": "ivan"
+    "username": "ivan@hogwarts.uk"
 }

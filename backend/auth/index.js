@@ -16,19 +16,14 @@ const app = express();
 const userRoutes = require('./src/routes/user-routes');
 const isRefreshToken = require('./src/lib/middleware/isRefreshToken');
 const { generateAccessToken } = require('./src/lib/generateTokens');
+const cookieParser = require('cookie-parser');
 
 require('./src/database/config');
 app.use(express.json());
-
+app.use(cookieParser());
 
 // @refresh post, isRefreshToken, send (new access token)()
-app.post('/refresh_token', isRefreshToken, (req, res) => {
-    const payload = req.user;
-    
-    const accessToken = generateAccessToken(payload);
-    
-    res.json({ accessToken });
-});
+app.post('/refresh_token', isRefreshToken, (req, res) => res.cookie('accessToken', generateAccessToken(req.user.userID)));
 
 app.use('/', userRoutes);
 
