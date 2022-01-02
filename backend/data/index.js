@@ -15,6 +15,10 @@ const app = express();
 const { hasAuth } = require('./src/lib/middleware/isAuth');
 
 app.use(express.json());
+// listen here
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => console.log("Data server running on port", PORT));
+
 
 // @assets, isAuth, cache, use assetsRoute
 app.get('/assets', (req, res) => {
@@ -25,16 +29,12 @@ app.get('/assets', (req, res) => {
 const servicesRoutes = require('./src/routes/services-routes');
 app.use('/services', hasAuth, servicesRoutes);
 
-
 // @history, isAuth, cache, use historyRoute
 app.get('/transactions', (req, res) => {
     res.send("transactions hit");
 });
 
-
 // @* catch with 404
 app.use('*', (_req, res) => res.sendStatus(404));
 
-// listen here
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => console.log("Data server running on port", PORT));
+

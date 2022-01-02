@@ -1,8 +1,16 @@
-GET http://localhost:3001/services/iex/search?symbol=aapl
+GET http://localhost:3001/services/tiingo/iex/search?symbol=aa
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWNkNWRkYzJkNTAwY2FjMTgxYWQ5MTUiLCJlbWFpbCI6Iml2YW4iLCJwYXNzd29yZCI6IiQyYSQxMCRDM0VEN0djaWhKeUZmbDdzZEFyZDdldmM3ZGZDaE16SUxpdkp1aXZzTjdtRHdTcmNNZ2tYNiIsImlzSG9zdCI6dHJ1ZSwiX192IjowLCJpYXQiOjE2NDA5MTk5NDEsImV4cCI6MTY0MDkxOTk1Nn0.wNUhC03v-1rSJnvmQ-IY6ouO_HJDo3MkiGb7W08nglo
 
 ###
-GET http://localhost:3001/services/iex/findOne?symbol=aapl
+GET http://localhost:3001/services/tiingo/iex/findOne?symbol=aapl
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWNkNWRkYzJkNTAwY2FjMTgxYWQ5MTUiLCJlbWFpbCI6Iml2YW4iLCJwYXNzd29yZCI6IiQyYSQxMCRDM0VEN0djaWhKeUZmbDdzZEFyZDdldmM3ZGZDaE16SUxpdkp1aXZzTjdtRHdTcmNNZ2tYNiIsImlzSG9zdCI6dHJ1ZSwiX192IjowLCJpYXQiOjE2NDA5MTk5NDEsImV4cCI6MTY0MDkxOTk1Nn0.wNUhC03v-1rSJnvmQ-IY6ouO_HJDo3MkiGb7W08nglo
 
 ###
+GET https://api.tiingo.com/tiingo/utilities/search?query=aap&limit=20&columns=ticker&token=acd661f2a6c9960564c94135e1866c690f010f81
+Content-Type: application/json
+Authorization: Token acd661f2a6c9960564c94135e1866c690f010f81
+
+###
+GET https://api.tiingo.com/iex/?tickers=aapl,spy&token=acd661f2a6c9960564c94135e1866c690f010f81
+Content-Type: application/json
+Authorization: Token acd661f2a6c9960564c94135e1866c690f010f81
