@@ -9,6 +9,7 @@ const jwt = require('jsonwebtoken');
 const { redis } = require('../../database/config');
 const logger = require('../logger');
 const verifyAccessToken = require('../verifyAccessToken');
+const { user } = require('../../database/config');
 
 
 // @hasAuth next if token is valid and if db_user matches decrypted token user name. if not res status of unauthorized or forbidden
@@ -62,3 +63,14 @@ module.exports.isHost = function (req, res, next) {
     });
 }
 
+module.exports.isUser = async function (req, res, next) {
+    const userExists = await user.findUnique({
+        where: {
+            user_id: req.body.userID,
+        },
+    });
+    
+    if (userExists) return res.sendStatus(200);
+
+    next();
+}

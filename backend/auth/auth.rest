@@ -16,6 +16,7 @@ Content-Type: application/json
 
 {
     "username": "ivan@hogwarts.uk",
+    "name": "ivan",
     "password": "ravenclaw123",
     "isHost": true
 }

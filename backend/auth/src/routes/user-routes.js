@@ -7,11 +7,12 @@
     use User
 */
 const express = require('express');
+const axios = require('axios');
 const router = express.Router();
 const { hash, genSalt, compare } = require('bcryptjs');
-const User = require('../models/User');
 const { generateAccessToken, generateRefreshToken } = require('../lib/generateTokens');
-const { hasAuth } = require('../lib/middleware/isAuth');
+const User = require('../models/User');
+const { hasAuth, isUser } = require('../lib/middleware/isAuth');
 const { redis } = require('../database/config');
 const logger = require('../lib/logger');
 const { createHash } = require('crypto');
@@ -36,7 +37,7 @@ router.post('/login', hasAuth, async (req, res) => {
 
 // post if user does not exist hash password and assign to username in db. After, send status okay
 router.post('/register', isUser, async (req, res) => {
-    const { username, password, isHost } = req.body;
+    const { username, password, isHost, name } = req.body;
 
     genSalt(10, function(err, salt) {
         if (err) {
@@ -53,11 +54,16 @@ router.post('/register', isUser, async (req, res) => {
             // Store hash in your password DB.
             const userID = createHash('sha256').update(username).digest('hex');
 
-            const user = new User({ email: username, password: hash, isHost, userID });
-
             try {
-                // first post for a new user in data server
-                
+                // first post for a new user in data server 
+                await axios.post(process.env.DATA_API_URL_DEV, {
+                    name,
+                    userID,
+                    isHost
+                });
+
+                const user = new User({ email: username, password: hash, isHost, userID, name });
+
                 await user.save();
 
                 res.sendStatus(200);

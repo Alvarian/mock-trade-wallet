@@ -22,22 +22,21 @@ app.listen(PORT, () => console.log("Data server running on port", PORT));
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(hasAuth);
 
 
 // @assets, isAuth, cache, use assetsRoute
 const assetsRoutes = require('./src/routes/assets-routes');
-app.use('/assets', assetsRoutes);
+app.use('/assets', hasAuth, assetsRoutes);
 
 // @search, isAuth, get all from IEX_api per character entry, using minimal 2 characters in req
 const servicesRoutes = require('./src/routes/services-routes');
-app.use('/services', servicesRoutes);
+app.use('/services', hasAuth, servicesRoutes);
 
 const userRoutes = require('./src/routes/user-routes');
 app.use('/user', userRoutes);
 
 // @history, isAuth, cache, use historyRoute
-app.get('/transactions', (req, res) => {
+app.get('/transactions', hasAuth, (req, res) => {
     res.send("transactions hit");
 });
 

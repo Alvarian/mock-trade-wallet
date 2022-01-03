@@ -19,3 +19,13 @@ Content-Type: application/json
     "symbol": "aapl",
     "amount": 2
 }
+
+###
+POST http://localhost:3001/user
+Content-Type: application/json
+
+{
+    "user_id": "ivan",
+    "symbol": "aapl",
+    "amount": 2
+}
