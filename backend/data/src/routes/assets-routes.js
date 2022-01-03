@@ -7,6 +7,8 @@ const express = require('express');
 const router = express.Router();
 const { Assets, User } = require('../database/config');
 const logger = require('../lib/logger');
+const { hasAmount } = require('../lib/middleware/isAuth');
+
 
 // get assets from db using user
 router.get('/', async (req, res) => {
@@ -30,7 +32,7 @@ router.get('/', async (req, res) => {
 });
 
 // @buy post to db new asset from details in req body and new transaction with time stamp and append to transactions & assets caches
-router.post('/buy', async (req, res) => {
+router.post('/buy', hasAmount, async (req, res) => {
     const { symbol, amount } = req.body;
     try {
         const userRecord = await User.findUnique({
@@ -43,6 +45,17 @@ router.post('/buy', async (req, res) => {
             where: {
                 userId: userRecord.id,
                 symbol
+            }
+        });
+
+        await User.update({
+            where: {
+                id: userRecord.id,
+            },
+            data: {
+                capital: {
+                    decrement: req.body.price
+                }
             }
         });
 

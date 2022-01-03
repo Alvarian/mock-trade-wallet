@@ -46,8 +46,28 @@ module.exports.hasAuth = async function (req, res, next) {
     }
 }
 
-module.exports.hasAmount = function (req, res, next) {
-    next();
+module.exports.hasAmount = async function (req, res, next) {
+    const userID = req.query.user_id;
+    if (!userID) {
+        logger.info("Error in isAuth", "Token or user id does not exist!");
+        return res.sendStatus(401);
+    }
+
+    try {
+        const userRecord = await User.findUnique({
+            where: {
+                user_id: userID,
+            }
+        });
+
+        if (userRecord.capital < req.body.price) return res.sendStatus(403);
+
+        req.capital = userRecord.capital;
+        next();
+    } catch (err) {
+        logger.info("Error in isAuth", err);
+        return res.sendStatus(403);
+    }
 }
 
 // @isHost next if users role is host, if not send status unauthorized

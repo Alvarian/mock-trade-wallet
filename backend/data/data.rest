@@ -16,5 +16,6 @@ Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZDMwMmN
 
 {
     "symbol": "aapl",
-    "amount": 1
+    "amount": 1,
+    "price": 100
 }
