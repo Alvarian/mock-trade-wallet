@@ -12,3 +12,6 @@ npx prisma generate --schema=./src/prisma/schema.prisma ??
 npx prisma migrate dev --schema=./src/prisma/schema.prisma
 
 yarn add @prisma/client
+
+to reset data
+npx prisma migrate reset --schema=./src/prisma/schema.prisma

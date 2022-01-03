@@ -10,8 +10,8 @@ console.log("Connected to Cache!");
 
 
 module.exports = {
-    assets: prisma.asset,
-    transactions: prisma.transaction,
-    user: prisma.user,
+    Assets: prisma.asset,
+    Transactions: prisma.transaction,
+    User: prisma.user,
     redis: client
 };

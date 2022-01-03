@@ -10,11 +10,11 @@ GET http://localhost:3001/assets
 Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZDMwMmNjYjI5YTg3MTlkNzUyN2M0ZTNkM2U5NGZiMmZjZmJhYzc2ZDk0MjY1Y2Y3ZTVhNTE2ODMzOWVmZDlhMyIsImlhdCI6MTY0MTE4OTM1NSwiZXhwIjoxNjQxMTg5Mzg1fQ.Yo-JHxro9Fu2dNhGyI8-zJEPW2eIULbdCGVfQQ1excU
 
 ###
-POST http://localhost:3001/assets/buy
+POST http://localhost:3001/assets/buy?user_id=d302ccb29a8719d7527c4e3d3e94fb2fcfbac76d94265cf7e5a5168339efd9a3
 Content-Type: application/json
+Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZDMwMmNjYjI5YTg3MTlkNzUyN2M0ZTNkM2U5NGZiMmZjZmJhYzc2ZDk0MjY1Y2Y3ZTVhNTE2ODMzOWVmZDlhMyIsImlhdCI6MTY0MTI0MjIwMSwiZXhwIjoxNjQxMjYwMjAxfQ.tka0Bb32vmYlz375caBauW6yj_3gNTDJLa17dr9Eujs
 
 {
-    "user_id": "ivan",
     "symbol": "aapl",
-    "amount": 2
+    "amount": 1
 }

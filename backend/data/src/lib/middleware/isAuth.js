@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken');
 const { redis } = require('../../database/config');
 const logger = require('../logger');
 const verifyAccessToken = require('../verifyAccessToken');
-const { user } = require('../../database/config');
+const { User } = require('../../database/config');
 
 
 // @hasAuth next if token is valid and if db_user matches decrypted token user name. if not res status of unauthorized or forbidden
@@ -33,7 +33,7 @@ module.exports.hasAuth = async function (req, res, next) {
 
     try {
         await verifyAccessToken(token, userID);
-        await user.findUnique({
+        await User.findUnique({
             where: {
                 user_id: userID,
             },
@@ -44,6 +44,10 @@ module.exports.hasAuth = async function (req, res, next) {
         logger.info("Error in isAuth", err);
         return res.sendStatus(403);
     }
+}
+
+module.exports.hasAmount = function (req, res, next) {
+    next();
 }
 
 // @isHost next if users role is host, if not send status unauthorized
@@ -69,7 +73,7 @@ module.exports.isHost = function (req, res, next) {
 }
 
 module.exports.isUser = async function (req, res, next) {
-    const userExists = await user.findUnique({
+    const userExists = await User.findUnique({
         where: {
             user_id: req.body.userID,
         },
