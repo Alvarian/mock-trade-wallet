@@ -24,14 +24,16 @@ router.post('/login', hasAuth, async (req, res) => {
     
     const refreshToken = generateRefreshToken(user.toJSON());
     const cacheDB = await redis;
-    cacheDB.setEx(user.email, 3600, refreshToken);
+    cacheDB.setEx(user.userID, 1000 * 24 * 60 * 60, refreshToken);
     
     res.cookie('accessToken', generateAccessToken(user.userID), {
         httpOnly: true, 
+        maxAge: 1000 * 5 * 60 * 60
         // secure: true // turn on in prod
     });
     res.cookie('user_id', user.userID, {
         httpOnly: true, 
+        maxAge: 1000 * 24 * 60 * 60
         // secure: true // turn on in prod
     });
     res.cookie('refreshToken', refreshToken, {

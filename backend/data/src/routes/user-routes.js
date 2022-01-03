@@ -11,9 +11,7 @@ router.post('/', isUser, async (req, res) => {
     await user.create({
         data: { name, user_id: userID, isHost }
     });
-
-    console.log({body: req.body, cookies: req.cookies})
-    // res.json({body: req.body, cookies: req.cookies})
+    
     res.sendStatus(200);
 });
 

@@ -23,8 +23,8 @@ app.use(cookieParser());
 
 // @refresh post, isRefreshToken, send (new access token)()
 app.post('/refresh_token', isRefreshToken, (req, res) => {
-    res.cookie('accessToken', generateAccessToken(req.user.userID));
-    res.cookie('user_id', req.user.userID);
+    res.cookie('accessToken', generateAccessToken(req.cookies.user_id));
+    
     res.sendStatus(200);
 });
 
