@@ -13,23 +13,22 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const express = require('express');
 const app = express();
-const userRoutes = require('./src/routes/user-routes');
 const isRefreshToken = require('./src/lib/middleware/isRefreshToken');
 const { generateAccessToken } = require('./src/lib/generateTokens');
+const cookieParser = require('cookie-parser');
 
 require('./src/database/config');
 app.use(express.json());
-
+app.use(cookieParser());
 
 // @refresh post, isRefreshToken, send (new access token)()
 app.post('/refresh_token', isRefreshToken, (req, res) => {
-    const payload = req.user;
-    
-    const accessToken = generateAccessToken(payload);
-    
-    res.json({ accessToken });
+    res.cookie('accessToken', generateAccessToken(req.user.userID));
+    res.cookie('user_id', req.user.userID);
+    res.sendStatus(200);
 });
 
+const userRoutes = require('./src/routes/user-routes');
 app.use('/', userRoutes);
 
 // @* get catch with 404

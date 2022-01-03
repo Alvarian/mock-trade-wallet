@@ -7,56 +7,46 @@
     use User
 */
 const express = require('express');
+const axios = require('axios');
 const router = express.Router();
 const { hash, genSalt, compare } = require('bcryptjs');
+const { generateAccessToken, generateRefreshToken } = require('../lib/generateTokens');
 const User = require('../models/User');
-const { generateAccessToken, generateRefreshToken } = require('../lib/generateTokens')
+const { hasAuth, isUser } = require('../lib/middleware/isAuth');
 const { redis } = require('../database/config');
 const logger = require('../lib/logger');
+const { createHash } = require('crypto');
 
 
 // post / if login works using body details with password and user from db, cache (new refresh token)() and send (new access token)(). If not send status unauthorized
-router.post('/login', async (req, res) => {
-    const { username, password } = req.body;
-
-    const [user] = await User.find({ email: username });
+router.post('/login', hasAuth, async (req, res) => {
+    const user = req.user;
     
-    if (!user || user.email !== username) {
-        logger.info("Error at login", `User '${username}' does not exist!`)
-        return res.sendStatus(403);
-    }
-
-    compare(password, user.password, async (err, response) => {
-        if (err) {
-            logger.info("Error at login", err);
-            return res.sendStatus(500);
-        }
-
-        if (!response) {
-            logger.info("Error at login", `Password '${password}' is incorrect`);
-            return res.sendStatus(401);
-        }
-        
-        const payload = user.toJSON();
-        const cacheDB = await redis;
-        cacheDB.setEx(user.email, 3600, generateRefreshToken(payload));
-        
-        res.json({
-            accessToken: generateAccessToken(payload),
-            refreshToken: generateRefreshToken(payload)
-        });
+    const refreshToken = generateRefreshToken(user.toJSON());
+    const cacheDB = await redis;
+    cacheDB.setEx(user.email, 3600, refreshToken);
+    
+    res.cookie('accessToken', generateAccessToken(user.userID), {
+        httpOnly: true, 
+        // secure: true // turn on in prod
     });
+    res.cookie('user_id', user.userID, {
+        httpOnly: true, 
+        // secure: true // turn on in prod
+    });
+    res.cookie('refreshToken', refreshToken, {
+        httpOnly: true, 
+        maxAge: 1000 * 24 * 60 * 60
+        // secure: true // turn on in prod
+    });
+
+    res.json(res.cookies); // turn off when client is connected
+    // res.sendStatus(200);
 });
 
 // post if user does not exist hash password and assign to username in db. After, send status okay
-router.post('/register', async (req, res) => {
-    const { username, password, isHost } = req.body;
-    const userExists = await User.find({ email: username });
-    
-    if (userExists.length) {
-        logger.info("Error at register", `User '${userExists[0].email}' already exist!`);
-        return res.sendStatus(403);
-    }
+router.post('/register', isUser, async (req, res) => {
+    const { username, password, isHost, name } = req.body;
 
     genSalt(10, function(err, salt) {
         if (err) {
@@ -71,13 +61,23 @@ router.post('/register', async (req, res) => {
             }
 
             // Store hash in your password DB.
-            const user = new User({ email: username, password: hash, isHost });
+            const userID = createHash('sha256').update(username).digest('hex');
 
             try {
+                // first post for a new user in data server 
+                await axios.post(process.env.DATA_API_URL_DEV, {
+                    name,
+                    userID,
+                    isHost
+                });
+
+                const user = new User({ email: username, password: hash, isHost, userID, name });
+
                 await user.save();
 
                 res.sendStatus(200);
             } catch (err) {
+                logger.info("Error at register", err);
                 res.sendStatus(400);
             }
         });
