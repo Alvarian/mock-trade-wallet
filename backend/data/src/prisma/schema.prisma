@@ -20,6 +20,8 @@ model User {
   
   isHost       Boolean @default(false)
 
+  capital      Int     @default(500)
+
   transactions Transaction[] 
 
   assets       Asset[]

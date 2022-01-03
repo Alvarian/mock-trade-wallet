@@ -12,7 +12,7 @@ router.post('/', isUser, async (req, res) => {
         data: { name, user_id: userID, isHost }
     });
     
-    res.sendStatus(200);
+    return res.sendStatus(200);
 });
 
 

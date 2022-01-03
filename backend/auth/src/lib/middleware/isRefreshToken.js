@@ -6,6 +6,7 @@
 const jwt = require('jsonwebtoken');
 const { redis } = require('../../database/config');
 const logger = require('../logger');
+const verifyRefreshToken = require('../verifyRefreshToken');
 
 
 // If theres no refresh token, send status forbidden. If refresh token is not found in redis send status forbidden. If refresh token is valid attach new access token with 15s duration to payload and next

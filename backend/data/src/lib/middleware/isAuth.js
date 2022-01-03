@@ -16,19 +16,19 @@ const { User } = require('../../database/config');
 module.exports.hasAuth = async function (req, res, next) {
     // const authHeader = req.headers['authorization'];
     // const token = authHeader && authHeader.split(' ')[1];
+    const userID = req.query.user_id;
     const token = req.cookies.accessToken;
-    if (!token) {
-        logger.info("Error in isAuth", "Token does not exist!");
+    if (!token || !userID) {
+        logger.info("Error in isAuth", "Token or user id does not exist!");
         return res.sendStatus(401);
     }
     
-    const userID = req.query.user_id;
     const cacheDB = await redis;
     const cachedToken = await cacheDB.get(userID);
     if (cachedToken && cachedToken === token) {
         await cacheDB.setEx(userID, 60, token);
 
-        next();
+        return next();
     }
 
     try {
@@ -54,7 +54,7 @@ module.exports.hasAmount = function (req, res, next) {
 module.exports.isHost = function (req, res, next) {
     if (!req.token) {
         logger.info("Error", "Token does not exist!");
-        res.sendStatus(401);
+        return res.sendStatus(401);
     }
 
     jwt.verify(req.token, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
