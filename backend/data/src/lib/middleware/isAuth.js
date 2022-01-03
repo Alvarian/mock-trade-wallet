@@ -14,14 +14,15 @@ const { user } = require('../../database/config');
 
 // @hasAuth next if token is valid and if db_user matches decrypted token user name. if not res status of unauthorized or forbidden
 module.exports.hasAuth = async function (req, res, next) {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
+    // const authHeader = req.headers['authorization'];
+    // const token = authHeader && authHeader.split(' ')[1];
+    const token = req.cookies.accessToken;
     if (!token) {
-        logger.info("Error", "Token does not exist!");
+        logger.info("Error in isAuth", "Token does not exist!");
         return res.sendStatus(401);
     }
-
-    const userID = req.cookies.user_id;
+    
+    const userID = req.query.user_id;
     const cacheDB = await redis;
     const cachedToken = await cacheDB.get(userID);
     if (cachedToken && cachedToken === token) {
@@ -32,11 +33,15 @@ module.exports.hasAuth = async function (req, res, next) {
 
     try {
         await verifyAccessToken(token, userID);
+        await user.findUnique({
+            where: {
+                user_id: userID,
+            },
+        });
         await cacheDB.setEx(userID, 60, token);
-
         next();
-    } catch (err) {
-        logger.info(err.name, err.message);
+    } catch(err) {
+        logger.info("Error in isAuth", err);
         return res.sendStatus(403);
     }
 }

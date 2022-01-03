@@ -11,8 +11,10 @@ const logger = require('../logger');
 // If theres no refresh token, send status forbidden. If refresh token is not found in redis send status forbidden. If refresh token is valid attach new access token with 15s duration to payload and next
 
 module.exports = (req, res, next) => {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
+    // const authHeader = req.headers['authorization'];
+    // const token = authHeader && authHeader.split(' ')[1];
+    const token = req.cookies.refreshToken;
+
     if (!token) {
         logger.info("Error", "Token does not exist!");
         return res.sendStatus(401);
