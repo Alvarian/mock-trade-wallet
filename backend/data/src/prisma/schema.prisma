@@ -20,6 +20,8 @@ model User {
   
   isHost       Boolean @default(false)
 
+  capital      Int     @default(500)
+
   transactions Transaction[] 
 
   assets       Asset[]
@@ -38,9 +40,9 @@ model Asset {
 
   total     Int      @default(0)
 
-  account   User     @relation(fields: [assetId], references: [id])
+  account   User     @relation(fields: [accountId], references: [id])
 
-  assetId   Int
+  accountId Int
 
 }
 
@@ -58,8 +60,8 @@ model Transaction {
 
   purchase_price Int
 
-  account        User     @relation(fields: [transactionId], references: [id])
+  account        User     @relation(fields: [accountId], references: [id])
 
-  transactionId  Int
+  accountId      Int
 
 }

@@ -35,11 +35,6 @@ app.use('/services', hasAuth, servicesRoutes);
 const userRoutes = require('./src/routes/user-routes');
 app.use('/user', userRoutes);
 
-// @history, isAuth, cache, use historyRoute
-app.get('/transactions', hasAuth, (req, res) => {
-    res.send("transactions hit");
-});
-
 // @* catch with 404
 app.use('*', (_req, res) => res.sendStatus(404));
 
