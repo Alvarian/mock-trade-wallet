@@ -1,0 +1,30 @@
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "username": "ivan@hogwarts.uk",
+    "password": "ravenclaw123"
+}
+
+###
+POST http://localhost:3000/refresh_token
+Cookie: refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWQzYWZiNjE3MjU1YTEzMmI1NzM1YzIiLCJlbWFpbCI6Iml2YW5AaG9nd2FydHMudWsiLCJ1c2VySUQiOiJkMzAyY2NiMjlhODcxOWQ3NTI3YzRlM2QzZTk0ZmIyZmNmYmFjNzZkOTQyNjVjZjdlNWE1MTY4MzM5ZWZkOWEzIiwibmFtZSI6Iml2YW4iLCJwYXNzd29yZCI6IiQyYSQxMCRkLnpOeDZseExHeFhsQlduZ0NzZ3UuTmppL2hvTXVCbjN0Wk1mTXAxaXg4aFpKb0pHZmJaZSIsImlzSG9zdCI6dHJ1ZSwiX192IjowLCJpYXQiOjE2NDEyNjMwMzcsImV4cCI6MTY0MTM0OTQzN30.3xlTGKgSydEvZg8d1OghE4pp7EleBIxhbEbLrdH04D4
+
+###
+POST http://localhost:3000/register
+Content-Type: application/json
+
+{
+    "username": "ivan@hogwarts.uk",
+    "name": "ivan",
+    "password": "ravenclaw123",
+    "isHost": true
+}
+
+###
+DELETE http://localhost:3000/logout
+Content-Type: application/json
+
+{
+    "username": "ivan@hogwarts.uk"
+}
