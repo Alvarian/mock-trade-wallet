@@ -42,8 +42,8 @@ router.post('/login', hasAuth, async (req, res) => {
         // secure: true // turn on in prod
     });
 
-    res.json(res.cookies); // turn off when client is connected
-    // res.sendStatus(200);
+    // res.json(res.cookies); // turn off when client is connected
+    res.sendStatus(200);
 });
 
 // post if user does not exist hash password and assign to username in db. After, send status okay
