@@ -40,9 +40,9 @@ model Asset {
 
   total     Int      @default(0)
 
-  account   User     @relation(fields: [userId], references: [id])
+  account   User     @relation(fields: [accountId], references: [id])
 
-  userId    Int
+  accountId Int
 
 }
 
@@ -60,8 +60,8 @@ model Transaction {
 
   purchase_price Int
 
-  account        User     @relation(fields: [userId], references: [id])
+  account        User     @relation(fields: [accountId], references: [id])
 
-  userId         Int
+  accountId      Int
 
 }

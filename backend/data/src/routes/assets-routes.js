@@ -7,6 +7,7 @@ const express = require('express');
 const router = express.Router();
 const { Assets, User } = require('../database/config');
 const logger = require('../lib/logger');
+const registerTransaction = require('../lib/registerTransaction');
 const { hasAmount } = require('../lib/middleware/isAuth');
 
 
@@ -43,7 +44,7 @@ router.post('/buy', hasAmount, async (req, res) => {
 
         const hasAsset = await Assets.findMany({
             where: {
-                userId: userRecord.id,
+                accountId: userRecord.id,
                 symbol
             }
         });
@@ -70,10 +71,12 @@ router.post('/buy', hasAmount, async (req, res) => {
             },
             create: {
                 symbol, 
-                userId: userRecord.id, 
+                accountId: userRecord.id, 
                 total: amount 
             },
         });
+
+        await registerTransaction(userRecord.id, amount, symbol, req.body.price);
 
         return res.sendStatus(200);
     } catch(err) {
