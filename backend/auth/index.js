@@ -36,5 +36,5 @@ app.use('*', (_req, res) => res.sendStatus(404));
 
 
 // listen here
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log("Auth server listening on port", PORT));

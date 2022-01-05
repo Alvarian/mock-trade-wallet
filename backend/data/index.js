@@ -16,10 +16,6 @@ const app = express();
 const cookieParser = require('cookie-parser');
 const { hasAuth } = require('./src/lib/middleware/isAuth');
 
-// listen here
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => console.log("Data server running on port", PORT));
-
 app.use(express.json());
 app.use(cookieParser());
 
@@ -39,3 +35,6 @@ app.use('/user', userRoutes);
 app.use('*', (_req, res) => res.sendStatus(404));
 
 
+// listen here
+const PORT = process.env.PORT || 8001;
+app.listen(PORT, () => console.log("Data server running on port", PORT));
