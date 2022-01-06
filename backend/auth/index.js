@@ -16,10 +16,14 @@ const app = express();
 const isRefreshToken = require('./src/lib/middleware/isRefreshToken');
 const { generateAccessToken } = require('./src/lib/generateTokens');
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 
 require('./src/database/config');
 app.use(express.json());
 app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(cors());
 
 // @refresh post, isRefreshToken, send (new access token)()
 app.post('/refresh_token', isRefreshToken, (req, res) => {

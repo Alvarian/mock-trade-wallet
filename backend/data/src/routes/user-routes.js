@@ -4,7 +4,7 @@ const { User } = require('../database/config');
 const { isUser } = require('../lib/middleware/isAuth');
 
 
-router.get('/', (req, res) => res.send('get one user'));
+router.get('/:id', (req, res) => res.send('get one user'));
 
 router.post('/', isUser, async (req, res) => {
     const { name, userID, isHost } = req.body;

@@ -14,11 +14,14 @@ require('./src/database/config');
 const express = require('express');
 const app = express();
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 const { hasAuth } = require('./src/lib/middleware/isAuth');
 
 app.use(express.json());
 app.use(cookieParser());
-
+app.use(bodyParser.json());
+app.use(cors());
 
 // @assets, isAuth, cache, use assetsRoute
 const assetsRoutes = require('./src/routes/assets-routes');

@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from "react";
+import { useRouter } from 'next/router'
 import Button from "components/button";
 import Input from "components/input";
-import { capitalizeFirstLetter } from "lib/formatting";
+import { capitalizeFirstLetter } from "lib/formaters";
 
 
 export default function Form({
     job,
     destination,
     fields,
-    redirect
+    redirect,
+    callBacks,
+    bodyConstructor
 }) {
     const [formData, setFormData] = useState(fields);
-    
+    const router = useRouter();
+
     function handleChange(index, e) {
         let newFormData = [...formData];
-
+        
         if (e.currentTarget.type === "checkbox") {
             newFormData[index].value = e.currentTarget.checked;
         } else {
@@ -26,24 +30,39 @@ export default function Form({
 
     async function handleSubmit(e) {
         e.preventDefault();
+        const formBody = e.currentTarget;
 
-        // Use fetch or axios to submit the form
-        await axios
-            .post(`${destination}/${job}`, formData)
-            .then((data) => {
-                console.log(data)
-                
-                router.push({
-                    pathname: redirect,
-                    query: {q: query},
-                });
-            })
-            .catch((e) => {
-                router.push({
-                    pathname: redirect,
-                    query: {q: query},
-                });
+        try {
+            for (let func of callBacks) {
+                const checkOrMatchResult = await func(formBody, destination);
+
+                if (!checkOrMatchResult.success) throw checkOrMatchResult.msg;
+            }
+            
+            const body = await bodyConstructor(formBody);
+            
+            const response = await fetch(`${destination}/${job}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
             });
+            const status = await response;
+            if (!status.ok) throw status.statusText;
+
+            router.push({
+                pathname: redirect,
+                // query: {q: query},
+            });
+        } catch (err) {
+            console.log("error:", err);
+
+            router.push({
+                pathname: router.pathname,
+                // query: {q: query},
+            });
+        }
     }
 
     return (

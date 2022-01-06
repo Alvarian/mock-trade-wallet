@@ -18,6 +18,14 @@ const logger = require('../lib/logger');
 const { createHash } = require('crypto');
 
 
+router.get('/:username', async (req, res) => {
+    const clientUsernameCheck = req.params.username;
+
+    const user = await User.findOne({ username: clientUsernameCheck });
+    
+    res.json(user);
+});
+
 // post / if login works using body details with password and user from db, cache (new refresh token)() and send (new access token)(). If not send status unauthorized
 router.post('/login', hasAuth, async (req, res) => {
     const user = req.user;
@@ -49,7 +57,7 @@ router.post('/login', hasAuth, async (req, res) => {
 // post if user does not exist hash password and assign to username in db. After, send status okay
 router.post('/register', isUser, async (req, res) => {
     const { username, password, isHost, name } = req.body;
-
+    
     genSalt(10, function(err, salt) {
         if (err) {
             logger.info("Error at register", err);

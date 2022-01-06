@@ -1,4 +1,5 @@
 import Form from 'components/form';
+import { checkRegistrationData } from "lib/checkers";
 
 
 export default function Register() {
@@ -36,12 +37,32 @@ export default function Register() {
         }
     ];
 
+    function createBody(registeredFormData) {
+        let attributes = {};
+        
+        for (let field of registeredFormData) {
+            if (field.name === 'username') {
+                attributes[field.name] = field.value;
+            } else if (field.name === 'name') {
+                attributes[field.name] = field.value;
+            } else if (field.name === 'password') {
+                attributes[field.name] = field.value;
+            } else if (field.name === 'isHost') {
+                attributes[field.name] = field.checked;
+            } 
+        }
+        
+        return attributes;
+    }
+    
     return (
         <Form
             job="register"
-            destination={process.env.AUTH_API_URL}
+            destination={process.env.NEXT_PUBLIC_AUTH_API_URL}
             fields={formFieldData}
-            redirect={'/'}
+            redirect={'/login'}
+            callBacks={[checkRegistrationData]}
+            bodyConstructor={createBody}
         />
     )
 }

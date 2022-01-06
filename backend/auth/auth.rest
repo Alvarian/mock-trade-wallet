@@ -28,3 +28,7 @@ Content-Type: application/json
 {
     "username": "ivan@hogwarts.uk"
 }
+
+###
+GET http://localhost:8000/ivan@hogwarts.uk
+

@@ -35,7 +35,7 @@ export default function Input({
                 <label className="label">
                     <span className="label-text">{label}</span>
                 </label> 
-                <input onChange={callBack} type="text" placeholder={name} name={name} className={classes} value={value} />
+                <input onChange={callBack.bind(this, index)} type="text" placeholder={name} name={name} className={classes} value={value} />
             </div>
         )
     }
@@ -65,7 +65,7 @@ export default function Input({
                 <label className="label">
                     <span className="label-text">{label}</span>
                 </label> 
-                <textarea onChange={callBack} className={`h24 ${classes}`} name={name} placeholder={name} value={value}></textarea>
+                <textarea onChange={callBack.bind(this, index)} className={`h24 ${classes}`} name={name} placeholder={name} value={value}></textarea>
             </div>
         )
     }
@@ -84,7 +84,7 @@ export default function Input({
             <div className="form-control">
                 <label className="cursor-pointer label">
                     <span className="label-text">{label}</span> 
-                    <input onChange={callBack} type="range" max="100" value={value} className={classes} name={name} /> 
+                    <input onChange={callBack.bind(this, index)} type="range" max="100" value={value} className={classes} name={name} /> 
                 </label>
             </div>
         )

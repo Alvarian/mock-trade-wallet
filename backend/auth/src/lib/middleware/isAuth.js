@@ -32,7 +32,7 @@ module.exports.hasAuth = async (req, res, next) => {
 module.exports.isUser = async (req, res, next) => {
     const userExists = await User.find({ email: req.body.username });
     
-    if (userExists.length) return res.sendStatus(200);
+    if (userExists.length) return res.sendStatus(401);
 
     next();
 };
