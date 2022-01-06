@@ -10,7 +10,7 @@ export default function Form({
     destination,
     fields,
     redirect,
-    callBacks,
+    callBacks=[],
     bodyConstructor
 }) {
     const [formData, setFormData] = useState(fields);
@@ -43,6 +43,7 @@ export default function Form({
             
             const response = await fetch(`${destination}/${job}`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -50,7 +51,7 @@ export default function Form({
             });
             const status = await response;
             if (!status.ok) throw status.statusText;
-
+            
             router.push({
                 pathname: redirect,
                 // query: {q: query},
@@ -64,7 +65,7 @@ export default function Form({
             });
         }
     }
-
+    
     return (
         <form className="p-6 card bordered" onSubmit={handleSubmit}>
             {formData.map((field, key) => {

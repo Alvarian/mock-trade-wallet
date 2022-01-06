@@ -21,7 +21,10 @@ const { hasAuth } = require('./src/lib/middleware/isAuth');
 app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+}));
 
 // @assets, isAuth, cache, use assetsRoute
 const assetsRoutes = require('./src/routes/assets-routes');

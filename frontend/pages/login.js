@@ -1,15 +1,8 @@
 import Form from 'components/form';
-import { checkRegistrationData } from "lib/checkers";
 
 
-export default function Register() {
+export default function Login() {
     const formFieldData = [
-        {
-            name: 'name',
-            label: 'Enter your name',
-            value: '',
-            as: "text",
-        },
         {
             name: 'username',
             label: 'Enter a username',
@@ -21,19 +14,6 @@ export default function Register() {
             label: 'Enter a password',
             value: '',
             as: "text",
-        },
-        {
-            name: 'password2',
-            label: 'Confirm password',
-            value: '',
-            as: "text",
-        },
-        {
-            as: "radio",
-            name: "isHost",
-            label: 'Are you a host?',
-            value: false,
-            isBordered: true,
         }
     ];
 
@@ -47,8 +27,6 @@ export default function Register() {
                 attributes[field.name] = field.value;
             } else if (field.name === 'password') {
                 attributes[field.name] = field.value;
-            } else if (field.name === 'isHost') {
-                attributes[field.name] = field.checked;
             } 
         }
         
@@ -57,14 +35,13 @@ export default function Register() {
     
     return (
         <div>
-            <h1>Register</h1>
+            <h1>Login</h1>
 
             <Form
-                job="register"
+                job="login"
                 destination={process.env.NEXT_PUBLIC_AUTH_API_URL}
                 fields={formFieldData}
-                redirect={'/login'}
-                callBacks={[checkRegistrationData]}
+                redirect={'/'}
                 bodyConstructor={createBody}
             />
         </div>
