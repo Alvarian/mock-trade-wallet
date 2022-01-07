@@ -32,7 +32,10 @@ module.exports.hasAuth = async function (req, res, next) {
     }
 
     try {
-        await verifyAccessToken(token, userID);
+        const isVerified = await verifyAccessToken(token, userID);
+        
+        if (!isVerified) throw "Token is not valid!"
+        
         await User.findUnique({
             where: {
                 user_id: userID,

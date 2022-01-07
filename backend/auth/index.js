@@ -15,6 +15,7 @@ const express = require('express');
 const app = express();
 const isRefreshToken = require('./src/lib/middleware/isRefreshToken');
 const { generateAccessToken } = require('./src/lib/generateTokens');
+const delCookies = require('./src/lib/delCookies');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -29,9 +30,15 @@ app.use(cors({
 }));
 
 // @refresh post, isRefreshToken, send (new access token)()
-app.post('/refresh_token', isRefreshToken, (req, res) => {
+app.get('/refresh_token', isRefreshToken, (req, res) => {
     res.cookie('accessToken', generateAccessToken(req.cookies.user_id));
     
+    res.sendStatus(200);
+});
+
+app.get('/clear_cookies', isRefreshToken, (req, res) => {
+    delCookies(req.cookies, res);
+
     res.sendStatus(200);
 });
 

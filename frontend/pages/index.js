@@ -1,6 +1,29 @@
-import Head from 'next/head'
+import React, { useState, useEffect } from 'react';
+import Head from 'next/head';
+import { getCookie } from 'cookies-next';
+import { useRouter } from 'next/router';
+
 
 export default function Home() {
+  const router = useRouter();
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const userIdCookie = getCookie('user_id');
+
+    if (userIdCookie) {
+      router.push({
+        pathname: '/home',
+      });
+    } else {
+      setLoaded(true)
+    }
+  });
+
+  if (!loaded) {
+    return (<p></p>)
+  }
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
       <Head>

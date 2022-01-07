@@ -15,6 +15,7 @@ const User = require('../models/User');
 const { hasAuth, isUser } = require('../lib/middleware/isAuth');
 const { redis } = require('../database/config');
 const logger = require('../lib/logger');
+const delCookies = require('../lib/delCookies');
 const { createHash } = require('crypto');
 
 
@@ -40,8 +41,8 @@ router.post('/login', hasAuth, async (req, res) => {
         // secure: true // turn on in prod
     });
     res.cookie('user_id', user.userID, {
-        httpOnly: true, 
-        maxAge: 1000 * 24 * 60 * 60
+        // httpOnly: true, 
+        maxAge: 1000 * 5 * 60 * 60
         // secure: true // turn on in prod
     });
     res.cookie('refreshToken', refreshToken, {
@@ -98,6 +99,7 @@ router.post('/register', isUser, async (req, res) => {
 router.delete('/logout', async (req, res) => {
     const cacheDB = await redis;
     cacheDB.del(req.body.username);
+    delCookies(req.cookies, res);
 
     res.sendStatus(204);
 });

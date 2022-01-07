@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useRouter } from 'next/router'
 import Button from "components/button";
 import Input from "components/input";
@@ -54,7 +54,7 @@ export default function Form({
             
             router.push({
                 pathname: redirect,
-                // query: {q: query},
+                // query: {user_id: document.cookie},
             });
         } catch (err) {
             console.log("error:", err);

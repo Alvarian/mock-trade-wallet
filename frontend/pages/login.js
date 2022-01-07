@@ -1,7 +1,39 @@
+import React, { useState, useEffect } from 'react'
+import { getCookie } from 'cookies-next';
+import { useRouter } from 'next/router';
 import Form from 'components/form';
 
 
 export default function Login() {
+    const [loaded, setLoaded] = useState(false);
+    const router = useRouter();
+
+    useEffect(async () => {
+        const userID = getCookie('user_id');
+        
+        try {
+            if (!userID) throw "Unauthorized";
+
+            router.push({
+                pathname: '/home'
+            });
+        } catch (err) {
+            try {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_AUTH_API_URL}/clear_cookies`, {
+                    method: "GET",
+                    credentials: "include"
+                });
+                if (!response.ok) throw response.statusText;
+                const data = await response.json();
+                if (!data.ok) throw data.statusText;
+            } catch (err) {
+                console.log(err);
+
+                setLoaded(true);
+            }
+        }
+    });
+
     const formFieldData = [
         {
             name: 'username',
@@ -33,6 +65,10 @@ export default function Login() {
         return attributes;
     }
     
+    if (!loaded) {
+        return (<p></p>);
+    }
+
     return (
         <div>
             <h1>Login</h1>

@@ -1,5 +1,6 @@
 const { compare } = require('bcryptjs');
 const User = require('../../models/User');
+const logger = require('../logger');
 
 
 module.exports.hasAuth = async (req, res, next) => {

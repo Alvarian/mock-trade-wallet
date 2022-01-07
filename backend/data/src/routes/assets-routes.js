@@ -20,15 +20,21 @@ router.get('/', async (req, res) => {
             },
         });
 
-        const data = await Assets.findMany({
-            where: {
-                userId: userRecord.id
-            }
-        });
-        
-        return res.json(data);
+        if (userRecord || userRecord?.length) {
+            const data = await Assets.findMany({
+                where: {
+                    accountId: userRecord.id
+                }
+            });
+
+            res.json(data);
+        } else {
+            res.json(userRecord || []);
+        }
     } catch (err) {
         logger.info("Error in assets routes", err);
+
+        res.sendStatus(500);
     }
 });
 
