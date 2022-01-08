@@ -19,14 +19,14 @@ module.exports = async (req, res, next) => {
         logger.info("Error", "Token does not exist!");
         return res.sendStatus(401);
     }
-
+    
     const cacheDB = await redis;
-    const cachedToken = await cacheDB.get(req.cookies.user_id);
+    const cachedToken = req.cookies.user_id && await cacheDB.get(req.cookies.user_id);
     if (cachedToken === token) return next();
 
     try {
         await verifyRefreshToken(token);
-        await cacheDB.setEx(req.cookies.user_id, 24 * 60 * 60, token);
+        req.cookies.user_id && await cacheDB.setEx(req.cookies.user_id, 24 * 60 * 60, token);
 
         next();
     } catch (err) {

@@ -12,11 +12,20 @@ const router = express.Router();
 const { hash, genSalt, compare } = require('bcryptjs');
 const { generateAccessToken, generateRefreshToken } = require('../lib/generateTokens');
 const User = require('../models/User');
-const { hasAuth, isUser } = require('../lib/middleware/isAuth');
+const { hasAuth, isUser, isNotUser } = require('../lib/middleware/isAuth');
 const { redis } = require('../database/config');
 const logger = require('../lib/logger');
+const delCookies = require('../lib/delCookies');
 const { createHash } = require('crypto');
 
+
+router.get('/:username', async (req, res) => {
+    const clientUsernameCheck = req.params.username;
+
+    const user = await User.findOne({ username: clientUsernameCheck });
+    
+    res.json(user);
+});
 
 // post / if login works using body details with password and user from db, cache (new refresh token)() and send (new access token)(). If not send status unauthorized
 router.post('/login', hasAuth, async (req, res) => {
@@ -24,7 +33,7 @@ router.post('/login', hasAuth, async (req, res) => {
     
     const refreshToken = generateRefreshToken(user.toJSON());
     const cacheDB = await redis;
-    cacheDB.setEx(user.userID, 1000 * 24 * 60 * 60, refreshToken);
+    cacheDB.setEx(user.userID, 24 * 60 * 60, refreshToken);
     
     res.cookie('accessToken', generateAccessToken(user.userID), {
         httpOnly: true, 
@@ -33,7 +42,7 @@ router.post('/login', hasAuth, async (req, res) => {
     });
     res.cookie('user_id', user.userID, {
         httpOnly: true, 
-        maxAge: 1000 * 24 * 60 * 60
+        maxAge: 1000 * 5 * 60 * 60
         // secure: true // turn on in prod
     });
     res.cookie('refreshToken', refreshToken, {
@@ -42,14 +51,14 @@ router.post('/login', hasAuth, async (req, res) => {
         // secure: true // turn on in prod
     });
 
-    // res.json(res.cookies); // turn off when client is connected
+    // res.send(res.cookies); 
     res.sendStatus(200);
 });
 
 // post if user does not exist hash password and assign to username in db. After, send status okay
 router.post('/register', isUser, async (req, res) => {
     const { username, password, isHost, name } = req.body;
-
+    
     genSalt(10, function(err, salt) {
         if (err) {
             logger.info("Error at register", err);
@@ -87,9 +96,10 @@ router.post('/register', isUser, async (req, res) => {
 });
 
 // delete if user and password match db, clear redis refresh token for user and send status okay
-router.delete('/logout', async (req, res) => {
+router.delete('/logout', isNotUser, async (req, res) => {
     const cacheDB = await redis;
-    cacheDB.del(req.body.username);
+    cacheDB.del(req.cookies.user_id);
+    delCookies(req.cookies, res);
 
     res.sendStatus(204);
 });

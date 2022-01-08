@@ -15,14 +15,22 @@ const express = require('express');
 const app = express();
 const isRefreshToken = require('./src/lib/middleware/isRefreshToken');
 const { generateAccessToken } = require('./src/lib/generateTokens');
+const delCookies = require('./src/lib/delCookies');
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 
 require('./src/database/config');
 app.use(express.json());
 app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+}));
 
 // @refresh post, isRefreshToken, send (new access token)()
-app.post('/refresh_token', isRefreshToken, (req, res) => {
+app.get('/refresh_token', isRefreshToken, (req, res) => {
     res.cookie('accessToken', generateAccessToken(req.cookies.user_id));
     
     res.sendStatus(200);
@@ -36,5 +44,5 @@ app.use('*', (_req, res) => res.sendStatus(404));
 
 
 // listen here
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log("Auth server listening on port", PORT));

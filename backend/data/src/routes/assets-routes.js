@@ -16,19 +16,25 @@ router.get('/', async (req, res) => {
     try {
         const userRecord = await User.findUnique({
             where: {
-                user_id: req.query.user_id,
+                user_id: req.cookies.user_id,
             },
         });
 
-        const data = await Assets.findMany({
-            where: {
-                userId: userRecord.id
-            }
-        });
-        
-        return res.json(data);
+        if (userRecord || userRecord?.length) {
+            const data = await Assets.findMany({
+                where: {
+                    accountId: userRecord.id
+                }
+            });
+
+            res.json(data);
+        } else {
+            res.json(userRecord || []);
+        }
     } catch (err) {
         logger.info("Error in assets routes", err);
+
+        res.sendStatus(404);
     }
 });
 

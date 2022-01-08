@@ -1,5 +1,5 @@
-yarn init -y
-yarn create next-app
+npx create-next-app -e with-tailwindcss ./my-project
+npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
+npx tailwindcss init -p
 
-yarn add daisyui tailwind
-// https://daisyui.com/docs/install
+npm i daisyui

@@ -14,15 +14,17 @@ require('./src/database/config');
 const express = require('express');
 const app = express();
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 const { hasAuth } = require('./src/lib/middleware/isAuth');
-
-// listen here
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => console.log("Data server running on port", PORT));
 
 app.use(express.json());
 app.use(cookieParser());
-
+app.use(bodyParser.json());
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+}));
 
 // @assets, isAuth, cache, use assetsRoute
 const assetsRoutes = require('./src/routes/assets-routes');
@@ -39,3 +41,6 @@ app.use('/user', userRoutes);
 app.use('*', (_req, res) => res.sendStatus(404));
 
 
+// listen here
+const PORT = process.env.PORT || 8001;
+app.listen(PORT, () => console.log("Data server running on port", PORT));
