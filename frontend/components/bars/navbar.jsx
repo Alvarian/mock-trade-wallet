@@ -7,7 +7,8 @@ export default function Navbar({
     menuItems,
     color,
     title,
-    size
+    size,
+    endExtraButton=""
 }) {
     const guardSize = size === "large" ? "normal" : (size === "tiny" ? "small" : (size === "small" ? "small" : "normal"));
 
@@ -29,6 +30,8 @@ export default function Navbar({
             <div className="flex-none hidden px-2 mx-2 md:flex">
                 <div className="flex items-stretch">
                     {menuItems}
+
+                    {endExtraButton}
                 </div>
             </div>
 

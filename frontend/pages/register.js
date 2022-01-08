@@ -1,40 +1,21 @@
-import React, { useState, useEffect } from 'react';
 import Form from 'components/form';
+import LandingLayout from 'components/layout/landingLayout';
 import { checkRegistrationData } from "lib/checkers";
-import { useRouter } from 'next/router';
-import { getCookie } from 'cookies-next';
 
 
-export default function Register() {
-    const [loaded, setLoaded] = useState(false);
-    const router = useRouter();
-
-    useEffect(async () => {
-        const userID = getCookie('user_id');
-        
-        try {
-            if (!userID) throw "Unauthorized";
-
-            router.push({
-                pathname: '/home'
-            });
-        } catch (err) {
-            try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_AUTH_API_URL}/clear_cookies`, {
-                    method: "GET",
-                    credentials: "include"
-                });
-                if (!response.ok) throw response.statusText;
-                const data = await response.json();
-                if (!data.ok) throw data.statusText;
-            } catch (err) {
-                console.log(err);
-
-                setLoaded(true);
-            }
+Register.getInitialProps = async function ({ req }) {
+    if (!req) {
+        return {
+            cookies: null
         }
-    });
+    }
+  
+    return {
+        cookies: req.cookies
+    }
+}
 
+export default function Register({ cookies }) {
     const formFieldData = [
         {
             name: 'name',
@@ -86,13 +67,9 @@ export default function Register() {
         
         return attributes;
     }
-    
-    if (!loaded) {
-        return (<p></p>)
-    }
 
     return (
-        <div>
+        <LandingLayout cookies={cookies}>
             <h1>Register</h1>
 
             <Form
@@ -103,6 +80,6 @@ export default function Register() {
                 callBacks={[checkRegistrationData]}
                 bodyConstructor={createBody}
             />
-        </div>
+        </LandingLayout>
     )
 }

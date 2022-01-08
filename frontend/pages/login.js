@@ -1,39 +1,20 @@
-import React, { useState, useEffect } from 'react'
-import { getCookie } from 'cookies-next';
-import { useRouter } from 'next/router';
+import LandingLayout from 'components/layouts/landingLayout';
 import Form from 'components/form';
 
 
-export default function Login() {
-    const [loaded, setLoaded] = useState(false);
-    const router = useRouter();
-
-    useEffect(async () => {
-        const userID = getCookie('user_id');
-        
-        try {
-            if (!userID) throw "Unauthorized";
-
-            router.push({
-                pathname: '/home'
-            });
-        } catch (err) {
-            try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_AUTH_API_URL}/clear_cookies`, {
-                    method: "GET",
-                    credentials: "include"
-                });
-                if (!response.ok) throw response.statusText;
-                const data = await response.json();
-                if (!data.ok) throw data.statusText;
-            } catch (err) {
-                console.log(err);
-
-                setLoaded(true);
-            }
+Login.getInitialProps = async function ({ req }) {
+    if (!req) {
+        return {
+            cookies: null
         }
-    });
+    }
+  
+    return {
+        cookies: req.cookies
+    }
+}
 
+export default function Login({ cookies }) {
     const formFieldData = [
         {
             name: 'username',
@@ -64,22 +45,18 @@ export default function Login() {
         
         return attributes;
     }
-    
-    if (!loaded) {
-        return (<p></p>);
-    }
 
     return (
-        <div>
+        <LandingLayout page={'assets'} cookies={cookies}>
             <h1>Login</h1>
 
             <Form
                 job="login"
                 destination={process.env.NEXT_PUBLIC_AUTH_API_URL}
                 fields={formFieldData}
-                redirect={'/'}
+                redirect={'/home'}
                 bodyConstructor={createBody}
             />
-        </div>
+        </LandingLayout>
     )
 }

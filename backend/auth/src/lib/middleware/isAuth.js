@@ -37,3 +37,11 @@ module.exports.isUser = async (req, res, next) => {
 
     next();
 };
+
+module.exports.isNotUser = async (req, res, next) => {
+    const userExists = await User.find({ user_id: req.cookies.user_id });
+    
+    if (!userExists || !userExists.length) return res.sendStatus(401);
+
+    next();
+};

@@ -16,7 +16,7 @@ const { User } = require('../../database/config');
 module.exports.hasAuth = async function (req, res, next) {
     // const authHeader = req.headers['authorization'];
     // const token = authHeader && authHeader.split(' ')[1];
-    const userID = req.query.user_id;
+    const userID = req.cookies.user_id;
     const token = req.cookies.accessToken;
     if (!token || !userID) {
         logger.info("Error in isAuth", "Token or user id does not exist!");
@@ -50,7 +50,7 @@ module.exports.hasAuth = async function (req, res, next) {
 }
 
 module.exports.hasAmount = async function (req, res, next) {
-    const userID = req.query.user_id;
+    const userID = req.cookies.user_id;
     if (!userID) {
         logger.info("Error in isAuth", "Token or user id does not exist!");
         return res.sendStatus(401);

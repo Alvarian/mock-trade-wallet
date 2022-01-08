@@ -36,12 +36,6 @@ app.get('/refresh_token', isRefreshToken, (req, res) => {
     res.sendStatus(200);
 });
 
-app.get('/clear_cookies', isRefreshToken, (req, res) => {
-    delCookies(req.cookies, res);
-
-    res.sendStatus(200);
-});
-
 const userRoutes = require('./src/routes/user-routes');
 app.use('/', userRoutes);
 
